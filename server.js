@@ -51,8 +51,13 @@ app.post("/generate", async (req, res) => {
 
   } catch (error) {
     console.error("OpenAI error:", error);
-    res.status(500).json({ error: "Failed to generate DreamDrop" });
+  
+    const statusCode = error?.statusCode || 500;
+    const message = error?.message || "Unknown error";
+  
+    res.status(statusCode).json({ error: message });
   }
+  
 });
 
 app.listen(port, () => {
