@@ -1,22 +1,20 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const { Configuration, OpenAIApi } = require("openai");
-require("dotenv").config();
+  import express from "express";
+  import cors from "cors";
+  import bodyParser from "body-parser";
+  import { OpenAI } from "openai";
+  import dotenv from "dotenv";
 
-const app = express();
-const port = process.env.PORT || 5000;
+  dotenv.config();
 
-app.use(cors());
-app.use(bodyParser.json());
+  const app = express();
+  const port = process.env.PORT || 5000;
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+  app.use(cors());
+  app.use(bodyParser.json());
 
-app.post("/generate", async (req, res) => {
-  const { mood } = req.body;
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
 
   try {
     const titleResponse = await openai.createChatCompletion({
@@ -42,7 +40,7 @@ app.post("/generate", async (req, res) => {
     console.error("OpenAI error:", error);
     res.status(500).json({ error: "Failed to generate DreamDrop" });
   }
-});
+  ;
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
